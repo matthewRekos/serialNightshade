@@ -1,6 +1,8 @@
 import argparse
 import json
 from json import JSONDecodeError
+import csv
+
 import ast
 
 def add_attack_arguments(arg_parser):
@@ -13,6 +15,13 @@ def add_attack_arguments(arg_parser):
     arg_parser.add_argument(
         "--output", "-o",
         help="Path for output of trace with attacks inserted",
+        type=str,
+        default="trace_with_attacks.json"
+    )
+    arg_parser.add_argument(
+        "--format", "-f",
+        help="Format for input and output data [supports: csv,json]",
+        default="json",
         type=str,
     )
     arg_parser.add_argument(
@@ -66,7 +75,13 @@ def add_attack_arguments(arg_parser):
         "--spoofing-interval-upperbound", "-siub",
         help="[spoofing] informs the upperbound of when spoofed messages appear",
         type=int,
-        default=500
+        default=50000
+    )
+    arg_parser.add_argument(
+        "--manipulation-field", "-mf",
+        help="[manipulation] informs what field to flip a bit in, defaults to 'id'",
+        type=str,
+        default="id"
     )
     return arg_parser
 
@@ -84,11 +99,18 @@ def open_trace(trace_path):
     return trace_data
 
 def read_csv(path):
-    pass
+    with open(path, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+    return reader
 
 def write_csv(path, data):
-    pass
-#TODO
+    with open(path, 'w', newline='') as csvfile:
+        fieldnames = list(data[0].keys())
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        writer.writeheader()
+        writer.writerows(data)
+
 
 def read_json(path):
     with open(path, "r") as f:
@@ -100,12 +122,3 @@ def write_json(path, data):
         json.dump(data, fw)
 
 
-def verify_trace(trace_element):
-    '''
-    trace_element: python dict containing trace data
-    Check for a time field, a data field, and an id field.
-
-    :return: True/False
-    '''
-
-    return True

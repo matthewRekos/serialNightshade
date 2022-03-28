@@ -1,0 +1,1 @@
+python3 ../main.py --input test_data.json --attack-output added_attacks.json  --output attack_data.json --attack-type spoofing --time time

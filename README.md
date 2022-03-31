@@ -2,9 +2,27 @@
 
 This tool is designed to add attacks randomly into a serial data bus dataset. It then outputs a copy of that dataset with the attacks, and a truth file with any attacks added so you can test your IDS.
 
+## Installation
+Simply run the setup file to package this tool as 'nightshade'
+```bash
+python3 setup.py install
+```
+
+
 ## Usage
 ```bash
-python3 main.py --input $(TRACE_PATH) --attack-type spoofing -t time
+usage: nightshade [-h] [--attack-chance ATTACK_CHANCE] [--output OUTPUT]
+                  [--format FORMAT] --input INPUT
+                  [--attack-output ATTACK_OUTPUT] --attack-type ATTACK_TYPE
+                  [--time TIME] [--data DATA] [--identifier IDENTIFIER]
+                  [--flooding-min-length FLOODING_MIN_LENGTH]
+                  [--spoofing-interval-lowerbound SPOOFING_INTERVAL_LOWERBOUND]
+                  [--spoofing-interval-upperbound SPOOFING_INTERVAL_UPPERBOUND]
+                  [--manipulation-field MANIPULATION_FIELD]
+```
+For an example of adding a spoofing attack to $(TRACE/PATH) with time since epoch stored as a key labeled 'time'
+```bash
+nightshade --input $(TRACE/PATH) --attack-type spoofing -t time
 ```
 
 
